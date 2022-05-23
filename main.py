@@ -2,6 +2,8 @@
 import pygame
 import random
 
+from fiorao import Fantasma
+
 pygame.init()
 
 #-------------------- GERAR TELA PRINCIL--------------
@@ -16,6 +18,8 @@ pygame.display.set_caption('PAC-MAN')
 
 background = pygame.image.load('img_mapa.jpeg').convert()
 background = pygame.transform.scale(background, (ALTURA,LARGURA))
+
+
 #================ LOOP PRINCIPAL ================
 game= True
 
