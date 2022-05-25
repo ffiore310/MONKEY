@@ -26,8 +26,9 @@ background = pygame.transform.scale(background, (ALTURA,LARGURA))
 
 for fantasmas in lista_fantasmas:
     img_fantasma = pygame.image.load(fantasmas).convert()
-    img_fantasma = pygame.transform.scale(img_fantasma, (30,30))
+    img_fantasma = pygame.transform.scale(img_fantasma, (20,20))
     lista_fantasmas_melhorados.append(img_fantasma)
+
 img_bloco = pygame.image.load('assets/img/bloco jogo pacman.jpg').convert()
 img_bloco = pygame.transform.scale(img_bloco, (20,20))
 all_blocos = pygame.sprite.Group()
@@ -40,6 +41,15 @@ for l in range(len(MAPA)):
             all_blocos.add(bloco)
             all_sprites.add(bloco)
 
+i = 0
+while i < 4:
+    posicao_x = random.randint(0, LARGURA)
+    posicao_y = random.randint(0, ALTURA)
+    fantasma = Fantasma(lista_fantasmas_melhorados[i], posicao_x, posicao_y)
+    all_fantasmas.add(fantasma)
+    all_sprites.add(fantasma)
+    i += 1
+
 
 #================ LOOP PRINCIPAL ================
 game= True
@@ -51,13 +61,14 @@ while game:
         # ----- Verifica consequências
         if event.type == pygame.QUIT:
             game = False
-    if len(all_fantasmas) < 4:
+    i = 0
+    while i < 4:
         posicao_x = random.randint(0, LARGURA)
         posicao_y = random.randint(0, ALTURA)
-        for fantasmas in lista_fantasmas_melhorados:
-            fantasma = Fantasma(fantasmas, posicao_x, posicao_y)
-            all_fantasmas.add(fantasma)
-            all_sprites.add(fantasma)
+        fantasma = Fantasma(lista_fantasmas_melhorados[i], posicao_x, posicao_y)
+        all_fantasmas.add(fantasma)
+        all_sprites.add(fantasma)
+        i += 1
 
 #-------------------- GERAR SAIDAS-----------
 
