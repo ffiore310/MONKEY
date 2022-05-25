@@ -1,13 +1,20 @@
 
 import pygame
 import random
+from mapa import MAPA
+
+from fiorao import Bloco, Fantasma
 
 pygame.init()
 
-#-------------------- GERAR TELA PRINCIL--------------
+#-------------------- GERAR TELA PRINCIPAL--------------
 
-ALTURA = 825
-LARGURA = 750
+BLOCO_ALTURA = 20
+BLOCO_LARGURA = 20
+
+lista_posicoes_disponiveis = []
+ALTURA = len(MAPA[0]) * 20
+LARGURA = len(MAPA) * BLOCO_LARGURA
 
 window = pygame.display.set_mode((ALTURA, LARGURA))
 pygame.display.set_caption('PAC-MAN')
@@ -16,8 +23,25 @@ pygame.display.set_caption('PAC-MAN')
 
 background = pygame.image.load('img_mapa.jpeg').convert()
 background = pygame.transform.scale(background, (ALTURA,LARGURA))
+
+img_fantasma = pygame.image.load('img_mapa.jpeg').convert()
+img_fantasma = pygame.transform.scale(img_fantasma, (30,30))
+img_bloco = pygame.image.load('img_mapa.jpeg').convert()
+img_bloco = pygame.transform.scale(img_bloco, (20,20))
+all_blocos = pygame.sprite.Group()
+all_fantasmas = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
+for l in range(len(MAPA)):
+    for c in range(len(MAPA[l])):
+        if MAPA[l][c] == '0':
+            bloco = Bloco(img_bloco, c * 20, l * 20)
+            all_blocos.add(bloco)
+            all_sprites.add(bloco)
+
+
 #================ LOOP PRINCIPAL ================
 game= True
+
 
 while game:
     # ----- Trata eventos
@@ -25,11 +49,21 @@ while game:
         # ----- Verifica consequências
         if event.type == pygame.QUIT:
             game = False
+    if len(all_fantasmas) < 4:
+        posicao_x = random.randint(0, LARGURA)
+        posicao_y = random.randint(0, ALTURA)
+        fantasma = Fantasma(img_fantasma, posicao_x, posicao_y)
+        all_fantasmas.add(fantasma)
+        all_sprites.add(fantasma)
 
 #-------------------- GERAR SAIDAS-----------
 
+    all_sprites.update()
+
     window.fill((0,0,0))
-    window.blit(background, (0,0))
+    #window.blit(background, (0,0))
+
+    all_sprites.draw(window)
 
     pygame.display.update()
 

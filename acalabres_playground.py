@@ -1,5 +1,4 @@
 import pygame
-
 mapa = [
     '0000000000000000000000000000000000',
     '0               00               0',
@@ -43,3 +42,45 @@ FPS = 30
 
 
 player = Pacman(pac_img)
+
+all_sprites = pygame.sprite.Group()
+
+all_sprites.add(player)
+
+while game:
+    clock.tick(FPS)
+
+    for event in pygame.event.get():
+
+        if event.type == pygame.QUIT:
+            game = False
+
+        if event.type == pygame.KEYDOWN:
+
+            if event.key == pygame.K_RIGHT:
+                player.speedx += 8
+
+            if event.key == pygame.K_LEFT:
+                player.speedx -= 8
+
+            if event.key == pygame.K_UP:
+                player.speedy += 8
+            
+            if event.type == pygame.K_DOWN:
+                player.speedy -= 8
+
+        if event.type == pygame.KEYUP:
+
+            if event.key == pygame.K_RIGHT:
+                player.speedx -= 8
+
+            if event.key == pygame.K_LEFT:
+                player.speedx += 8
+
+            if event.key == pygame.K_UP:
+                player.speedy -= 8
+            
+            if event.type == pygame.K_DOWN:
+                player.speedy += 8
+
+    all_sprites.update()
