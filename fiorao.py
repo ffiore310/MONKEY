@@ -1,16 +1,48 @@
 import pygame
 import random 
 
-
-lista_fantasmas = []
-listas_cores = ['amarelo', 'azul', 'rosa', 'vermelho']
-imagem_fantasma = random.choice(lista_fantasmas)
 class Fantasma(pygame.sprite.Sprite):
-    def __init__(self, img, cor):
+    #Atributos
+    def __init__(self, img, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.rect = self.image.get_rect()
-        self.rect.x = 10
-        self.rect.y = 30
-        self.cor = cor
-        
+        self.rect.x = x
+        self.rect.y = y
+    #Metodos(Aquilo que a classe vai fazer)
+
+    def update(self):
+        pass
+
+class Bolinha(pygame.sprite.Sprite):
+    def __init__(self, img, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def update(self):
+        pass
+
+class Comida(pygame.sprite.Sprite):
+    def __init__(self, img, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def update(self):
+        pass
+
+class Bloco(pygame.sprite.Sprite):
+    def __init__(self,img, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def update(self):
+        pass
