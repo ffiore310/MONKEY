@@ -11,7 +11,7 @@ BLOCO_ALTURA = 20
 BLOCO_LARGURA = 20
 
 lista_posicoes_disponiveis = []
-lista_fantasmas = ['assets/img/fantasma azul .png', 'assets/img/fantasma laranja.png', 'assets/img/fantasma rosa 11.30.35.png', 'assets/img/fantasma vermelho .png']
+lista_fantasmas = ['assets/img/fantasma_azul.png', 'assets/img/fantasma_laranja.png', 'assets/img/fantasma_rosa.png', 'assets/img/fantasma_vermelho .png']
 lista_fantasmas_melhorados = []
 ALTURA = len(MAPA[0]) * 20
 LARGURA = len(MAPA) * BLOCO_LARGURA

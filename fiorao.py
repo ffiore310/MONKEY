@@ -9,10 +9,13 @@ class Fantasma(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.speedx = 1
+        self.speedy = 0
     #Metodos(Aquilo que a classe vai fazer)
 
     def update(self):
-        pass
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
 
 class Bolinha(pygame.sprite.Sprite):
     def __init__(self, img, x, y):
