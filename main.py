@@ -56,8 +56,8 @@ while game:
         posicao_y = random.randint(0, ALTURA)
         for fantasmas in lista_fantasmas_melhorados:
             fantasma = Fantasma(fantasmas, posicao_x, posicao_y)
-            all_fantasmas.add(fantasmas)
-            all_sprites.add(fantasmas)
+            all_fantasmas.add(fantasma)
+            all_sprites.add(fantasma)
 
 #-------------------- GERAR SAIDAS-----------
 
