@@ -93,4 +93,3 @@ while game:
     mapa_com_blocos.draw(window)
     pygame.display.update()
 
-teste 
