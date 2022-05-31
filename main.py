@@ -35,6 +35,7 @@ all_blocos = pygame.sprite.Group()
 all_fantasmas = pygame.sprite.Group()
 all_bolinhas = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
+
 for l in range(len(MAPA)):
     for c in range(len(MAPA[l])):
         if MAPA[l][c] == '0':
