@@ -1,15 +1,4 @@
 import pygame
-mapa = [
-    '0000000000000000000000000000000000',
-    '0               00               0',
-    '0   0   0 0 0    0'
-]
-
-for l in range(len(mapa)):
-    for c in range(len(mapa[l])):
-        if mapa[l][c] == '0':
-            b = Bloco(img, l * 20, c * 20)
-            all_blocks.add(b)
 
 class Pacman (pygame.sprite.Sprite):
 
@@ -40,7 +29,9 @@ game = True
 clock = pygame.time.Clock()
 FPS = 30
 
-
+pac_img = pygame.image.load('assets/img/pacman_fechado .png')
+pac_img = pygame.transform.scale(pac_img, (50,50))
+print(type(pac_img))
 player = Pacman(pac_img)
 
 all_sprites = pygame.sprite.Group()
