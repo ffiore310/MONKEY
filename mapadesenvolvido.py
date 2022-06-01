@@ -1,7 +1,7 @@
 import random
 from mapa import MAPA
 import pygame
-from classes import Bloco, Pacman02, Fantasma
+from classes import Bloco, Comidinha, Pacman02, Fantasma
 from config import *
 
 pygame.init()
@@ -15,6 +15,10 @@ img_bloco = pygame.image.load('assets/img/bloco_jogo_pacman.jpg').convert()
 img_bloco = pygame.transform.scale(img_bloco, (30,30))
 mapa_com_blocos = pygame.sprite.Group()
 
+img_comidinha = pygame.image.load('assets/img/bolinha.png').convert_alpha()
+img_comidinha = pygame.transform.scale(img_comidinha, (COMIDINHA_WIDTH,COMIDINHA_HEIGHT))
+
+all_comidinhas = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_fantasmas = pygame.sprite.Group()
 
@@ -24,6 +28,13 @@ for l in range(len(MAPA)):
             bloco = Bloco(img_bloco, c, l)
             mapa_com_blocos.add(bloco)
             all_sprites.add(bloco)
+
+for x in range(len(MAPA)):
+    for y in range(len(MAPA[x])):
+        if MAPA[x][y] == 1:
+            bolinha = Comidinha(img_comidinha, y, x)
+            all_comidinhas.add(bolinha)
+            all_sprites.add(bolinha)
 
 # IMAGENS PACMAN
 
@@ -96,7 +107,7 @@ while game:
 
     #ATUALIZA O JOGO
     all_sprites.update()
-    
+
 
     # GERA SAIDAS
     window.fill((0,0,0))
