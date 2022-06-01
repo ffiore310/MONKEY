@@ -1,4 +1,6 @@
 import pygame
+import random
+from mapa import MAPA
 
 class Bloco(pygame.sprite.Sprite):
     def __init__(self,img, x, y):
@@ -98,16 +100,25 @@ class Pacman02 (pygame.sprite.Sprite):
 
 class Fantasma(pygame.sprite.Sprite):
     def __init__(self, img, x, y):
-        # Construtor da classe mãe (Sprite).
-        pygame.sprite.Sprite.__init__(self)
-
         self.image = img
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.speedx = 0
         self.speedy = 0
+    
+    def posicao (self, x, y):
+        lugar = MAPA[x][y]
+        if MAPA[x-1][y] != 0:
+            self.speedy = 3
+        elif MAPA[x][y-1] != 0:
+            self.speedx = -3
+        elif MAPA[x+1][y] != 0:
+            self.speedx = -3
+        elif MAPA[x][y+1] != 0:
+            self.speedy = 3
 
     def update(self):
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
+       if self.rect.x + 1 == 0 or self.rect.x - 1:
+           self.speedy = random.randint(-3, 3)
+    
