@@ -1,10 +1,8 @@
 
-
-
 import random
 from mapa import MAPA
 import pygame
-from classes import Bloco, Comidinha, Pacman02, Fantasma
+from classes import Bloco, Comidinha, Pacman02, Fantasma, Comida
 from config import *
 
 pygame.init()
@@ -21,23 +19,35 @@ mapa_com_blocos = pygame.sprite.Group()
 img_comidinha = pygame.image.load('assets/img/bolinha.png').convert_alpha()
 img_comidinha = pygame.transform.scale(img_comidinha, (10,10))
 
+img_comida = pygame.image.load('assets/img/comidinha.png').convert_alpha()
+img_comida = pygame.transform.scale(img_comida, (20,20))
+
+all_comidas = pygame.sprite.Group()
 all_comidinhas = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_fantasmas = pygame.sprite.Group()
-#blocos
+
 for l in range(len(MAPA)):
     for c in range(len(MAPA[l])):
         if MAPA[l][c] == 0:
             bloco = Bloco(img_bloco, c, l)
             mapa_com_blocos.add(bloco)
             all_sprites.add(bloco)
-#comidinhas
+
 for x in range(len(MAPA)):
     for y in range(len(MAPA[x])):
         if MAPA[x][y] == 1:
             bolinha = Comidinha(img_comidinha, y+0.35, x+0.35)
             all_comidinhas.add(bolinha)
             all_sprites.add(bolinha)
+
+for x in range(len(MAPA)):
+    for y in range(len(MAPA[x])):
+        if MAPA[x][y] == 4:
+            comida = Comida(img_comida, y+0.25, x+0.25)
+            all_comidas.add(comida)
+            all_sprites.add(comida)
+
 
 # IMAGENS PACMAN
 
@@ -113,9 +123,12 @@ while game:
 
     #GERA COLISÃO
     hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
+    hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
+
     hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True)
     if len(hits_fantasmas)>0:
-        playe
+        player.kill()
+
 
     # GERA SAIDAS
     window.fill((0,0,0))
