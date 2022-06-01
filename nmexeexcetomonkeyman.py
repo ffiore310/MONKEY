@@ -90,6 +90,12 @@ for fantasmas in img_fantasmas:
     all_fantasmas.add(f)
     lugar_inicial_fantasma += 3
 
+assets = {}
+assets["score_font"] = pygame.font.Font('assets/font/PressStart2P.ttf', 28)
+
+score = 0
+lives = 3
+
 # INICIANDO O JOGO
 while game:
     clock.tick(FPS)
@@ -123,11 +129,15 @@ while game:
 
     #GERA COLISÃO
     hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
+    for comidinha in hits_comidinhas:
+        score += 100
+
     hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
 
     hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True)
     if len(hits_fantasmas)>0:
         player.kill()
+        lives = - 1
 
 
     # GERA SAIDAS
@@ -135,5 +145,18 @@ while game:
     window.blit(player.image, player.rect)
 
     all_sprites.draw(window)
+
+    # Desenhando o score
+    text_surface = assets['score_font'].render("{:08d}".format(score), True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (ALTURA/ 2,  700)
+    window.blit(text_surface, text_rect)
+
+    # Desenhando as vidas
+    text_surface = assets['score_font'].render(chr(9829) * lives, True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.bottomleft = (10, LARGURA - 10)
+    window.blit(text_surface, text_rect)
+
     pygame.display.update()
 
