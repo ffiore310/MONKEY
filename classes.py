@@ -13,28 +13,7 @@ class Bloco(pygame.sprite.Sprite):
 
     def update(self):
         pass
-class Pacman(pygame.sprite.Sprite):
-
-    def __init__(self,lista_img): #lista_img -> lista de imagens do pacman (abrindo e fechando a boca)
-
-        pygame.sprite.Sprite.__init__(self)
-
-        self.index_image = 0 #seria a lista 
-        self.lista_img = lista_img
-        self.image = self.lista_img[self.index_image]
-        self.rect = self.image.get_rect()
-        self.rect.x = 250
-        self.rect.y = 250
-        self.speedx = 0
-        self.speedy = 0
-
-    def update(self):
-
-        self.rect.x += self.speedx 
-        self.rect.y += self.speedy
-        self.index_image = (self.index_image + 1) % len(self.lista_img)
-        self.image = self.lista_img[self.index_image]
-
+    
 class Pacman02 (pygame.sprite.Sprite):
 
     def __init__(self, lista_img):
@@ -43,8 +22,8 @@ class Pacman02 (pygame.sprite.Sprite):
         self.lista_img = lista_img
         self.image = lista_img[self.e]
         self.rect = self.image.get_rect()
-        self.rect.x = 250
-        self.rect.y = 250
+        self.rect.x = 0
+        self.rect.y = 330
         self.speedx = 0
         self.speedy = 0
         self.last = 1

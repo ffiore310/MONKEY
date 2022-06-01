@@ -79,7 +79,7 @@ FPS = 10
 
 # CRIANDO PERSONAGENS
 player = Pacman02(paclist_img)
-
+last_list = [0,0]
 
 all_sprites.add(player)
 lugar_inicial_fantasma = 13   
@@ -109,18 +109,38 @@ while game:
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_d:
-                player.speedx -= 8
+                player.speedx = 0
             if event.key == pygame.K_a:
-                player.speedx += 8
+                player.speedx = 0
             if event.key == pygame.K_w:
-                player.speedy += 8
+                player.speedy = 0
             if event.key == pygame.K_s:
-                player.speedy -= 8
+                player.speedy = 0
 
     #ATUALIZA O JOGO
     all_sprites.update()
     hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
     hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
+
+    # COLISAO PAC-PAREDE
+    last_list.append(player.rect.x)
+    last_list.append(player.rect.y)
+    hits = pygame.sprite.spritecollide(player,mapa_com_blocos, False)
+    if len(hits)>0:
+        player.speedx =0 
+        player.speedy =0 
+        player.rect.x = last_list[2] 
+        player.rect.y = last_list[3] 
+    del last_list[0]
+    del last_list[1]
+
+    # TELETRANSPORTE PACMAN
+    if player.rect.right > ALTURA:
+        player.rect.x = 0
+        player.rect.y = 330
+    if player.rect.left < 0:
+        player.rect.x = 1080
+        player.rect.y = 330
 
     # GERA SAIDAS
     window.fill((0,0,0))
