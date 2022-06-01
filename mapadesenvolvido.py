@@ -1,15 +1,12 @@
+import random
 from mapa import MAPA
 import pygame
-from classes import Bloco, Pacman02
+from classes import Bloco, Pacman02, Fantasma
+from config import *
 
 pygame.init()
 
 # DEFINICAO MAPA
-
-BLOCO_ALTURA = 30
-BLOCO_LARGURA = 30
-ALTURA = len(MAPA[0]) * 30
-LARGURA = len(MAPA) * BLOCO_LARGURA
 
 window = pygame.display.set_mode((ALTURA, LARGURA))
 pygame.display.set_caption('PAC-MAN')
@@ -18,11 +15,15 @@ img_bloco = pygame.image.load('assets/img/bloco_jogo_pacman.jpg').convert()
 img_bloco = pygame.transform.scale(img_bloco, (30,30))
 mapa_com_blocos = pygame.sprite.Group()
 
+all_sprites = pygame.sprite.Group()
+all_fantasmas = pygame.sprite.Group()
+
 for l in range(len(MAPA)):
     for c in range(len(MAPA[l])):
         if MAPA[l][c] == 0:
-            bloco = Bloco(img_bloco, c * 30, l * 30)
+            bloco = Bloco(img_bloco, c, l)
             mapa_com_blocos.add(bloco)
+            all_sprites.add(bloco)
 
 # IMAGENS PACMAN
 
@@ -41,6 +42,12 @@ pac_img_aberto_baixo = pygame.transform.scale(pac_img_aberto_baixo, (30,30))
 
 paclist_img = [pac_img_fechado, pac_img_aberto,pac_img_aberto_esquerda, pac_img_aberto_cima, pac_img_aberto_baixo]
 
+img_fantasmas = []
+for name in ['fantasma_azul.png', 'fantasma_laranja.png', 'fantasma_rosa.png', 'fantasma_vermelho.png']:
+    img = pygame.image.load(f'assets/img/{name}')
+    img = pygame.transform.scale(img, (30,30))
+    img_fantasmas.append(img)
+
 game= True
 
 #ACERTANDO OS FPS
@@ -50,9 +57,14 @@ FPS = 10
 # CRIANDO PERSONAGENS
 player = Pacman02(paclist_img)
 
-all_sprites = pygame.sprite.Group
+
 all_sprites.add(player)
-    
+lugar_inicial_fantasma = 13   
+for fantasmas in img_fantasmas:
+    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11)
+    all_sprites.add(f)
+    all_fantasmas.add(f)
+    lugar_inicial_fantasma += 3
 
 # INICIANDO O JOGO
 while game:
@@ -83,13 +95,12 @@ while game:
                 player.speedy -= 8
 
     #ATUALIZA O JOGO
-    mapa_com_blocos.update()
-    player.update(paclist_img)
+    all_sprites.update()
 
     # GERA SAIDAS
     window.fill((0,0,0))
     window.blit(player.image, player.rect)
 
-    mapa_com_blocos.draw(window)
+    all_sprites.draw(window)
     pygame.display.update()
 

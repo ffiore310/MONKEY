@@ -1,0 +1,6 @@
+from mapa import MAPA
+
+BLOCO_ALTURA = 30
+BLOCO_LARGURA = 30
+ALTURA = len(MAPA[0]) * 30
+LARGURA = len(MAPA) * BLOCO_LARGURA
