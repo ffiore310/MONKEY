@@ -104,6 +104,8 @@ class Pacman02 (pygame.sprite.Sprite):
 class Fantasma(pygame.sprite.Sprite):
     def __init__(self, img, l, c):
         pygame.sprite.Sprite.__init__(self)
+        self.l = l
+        self.c = c
         self.image = img
         self.rect = self.image.get_rect()
         self.rect.x = l * BLOCO_LARGURA
@@ -111,18 +113,16 @@ class Fantasma(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
     
-    def posicao (self, l, c):
-        lugar = MAPA[l][c]
-        if MAPA[l-1][c] != 0:
+    def update (self):
+        lugar = MAPA[self.l][self.c]
+        if MAPA[self.l-1][self.c] != 0:
             self.speedy = 3
-        elif MAPA[l][c-1] != 0:
+        elif MAPA[self.l][self.c-1] != 0:
             self.speedx = -3
-        elif MAPA[l+1][c] != 0:
+        elif MAPA[self.l+1][self.c] != 0:
             self.speedx = -3
-        elif MAPA[l][c+1] != 0:
+        elif MAPA[self.l][self.c+1] != 0:
             self.speedy = 3
 
-    def update(self):
-       if self.rect.x + 1 == 0 or self.rect.x - 1:
-           self.speedy = random.randint(-3, 3)
+    
     

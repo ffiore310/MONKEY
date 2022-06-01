@@ -96,6 +96,7 @@ while game:
 
     #ATUALIZA O JOGO
     all_sprites.update()
+    
 
     # GERA SAIDAS
     window.fill((0,0,0))
