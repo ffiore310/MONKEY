@@ -24,18 +24,18 @@ img_comidinha = pygame.transform.scale(img_comidinha, (10,10))
 all_comidinhas = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_fantasmas = pygame.sprite.Group()
-
+#blocos
 for l in range(len(MAPA)):
     for c in range(len(MAPA[l])):
         if MAPA[l][c] == 0:
             bloco = Bloco(img_bloco, c, l)
             mapa_com_blocos.add(bloco)
             all_sprites.add(bloco)
-
+#comidinhas
 for x in range(len(MAPA)):
     for y in range(len(MAPA[x])):
         if MAPA[x][y] == 1:
-            bolinha = Comidinha(img_comidinha, y, x)
+            bolinha = Comidinha(img_comidinha, y+0.35, x+0.35)
             all_comidinhas.add(bolinha)
             all_sprites.add(bolinha)
 
@@ -112,7 +112,10 @@ while game:
     all_sprites.update()
 
     #GERA COLISÃO
-    hits = pygame.sprite.spritecollide(player, all_comidinhas, True)
+    hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
+    hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True)
+    if len(hits_fantasmas)>0:
+        playe
 
     # GERA SAIDAS
     window.fill((0,0,0))
