@@ -123,6 +123,8 @@ class Fantasma(pygame.sprite.Sprite):
             self.speedx = -3
         elif MAPA[self.l][self.c+1] != 0:
             self.speedy = 3
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
 
 class Comidinha(pygame.sprite.Sprite):
     def __init__(self, img, x, y):
@@ -131,6 +133,16 @@ class Comidinha(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x * COMIDINHA_WIDTH
         self.rect.y = y * COMIDINHA_HEIGHT
+    def update(self):
+        pass
+
+class Comida (pygame.sprite.Sprite):
+    def __init__(self, img, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = x * COMIDA_WIDTH
+        self.rect.y = y * COMIDA_HEIGHT
     def update(self):
         pass
 
