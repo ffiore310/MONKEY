@@ -1,4 +1,3 @@
-
 import random
 from mapa import MAPA
 import pygame
@@ -80,7 +79,7 @@ FPS = 10
 
 # CRIANDO PERSONAGENS
 player = Pacman02(paclist_img)
-
+last_list = [0,0]
 
 all_sprites.add(player)
 lugar_inicial_fantasma = 13   
@@ -89,6 +88,12 @@ for fantasmas in img_fantasmas:
     all_sprites.add(f)
     all_fantasmas.add(f)
     lugar_inicial_fantasma += 3
+
+assets = {}
+assets["score_font"] = pygame.font.Font('assets/font/PressStart2P.ttf', 28)
+
+score = 0
+lives = 3
 
 # INICIANDO O JOGO
 while game:
@@ -110,30 +115,69 @@ while game:
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_d:
-                player.speedx -= 8
+                player.speedx = 0
             if event.key == pygame.K_a:
-                player.speedx += 8
+                player.speedx = 0
             if event.key == pygame.K_w:
-                player.speedy += 8
+                player.speedy = 0
             if event.key == pygame.K_s:
-                player.speedy -= 8
+                player.speedy = 0
 
     #ATUALIZA O JOGO
     all_sprites.update()
 
-    #GERA COLISÃO
+    #COLISÃO COMIDINHAS 
     hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
+    for comidinha in hits_comidinhas:
+        score += 100
+
+    #COLISÃO SUPER COMIDA 
     hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
 
+    #COLISÃO FANTASMAS 
     hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True)
     if len(hits_fantasmas)>0:
         player.kill()
+        lives = - 1
 
+    # COLISAO PAC-PAREDE
+    last_list.append(player.rect.x)
+    last_list.append(player.rect.y)
+    hits = pygame.sprite.spritecollide(player,mapa_com_blocos, False)
+    if len(hits)>0:
+        player.speedx =0 
+        player.speedy =0 
+        player.rect.x = last_list[2] 
+        player.rect.y = last_list[3] 
+    del last_list[0]
+    del last_list[1]
+
+    # TELETRANSPORTE PACMAN
+    if player.rect.right > ALTURA:
+        player.rect.x = 0
+        player.rect.y = 330
+    if player.rect.left < 0:
+        player.rect.x = 1080
+        player.rect.y = 330
 
     # GERA SAIDAS
     window.fill((0,0,0))
     window.blit(player.image, player.rect)
 
     all_sprites.draw(window)
+
+    # Desenhando o score
+    text_surface = assets['score_font'].render("{:08d}".format(score), True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (ALTURA/ 2,  700)
+    window.blit(text_surface, text_rect)
+
+    # Desenhando as vidas
+    text_surface = assets['score_font'].render(chr(9829) * lives, True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.bottomleft = (10, LARGURA - 10)
+    window.blit(text_surface, text_rect)
+
     pygame.display.update()
+
 
