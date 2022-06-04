@@ -106,6 +106,8 @@ while game:
                 player.speedy -= 8
             if event.key == pygame.K_s:
                 player.speedy += 8
+            if event.key == pygame.K_q:
+                game = False
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_d:
@@ -123,16 +125,18 @@ while game:
     hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
 
     # COLISAO PAC-PAREDE
-    last_list.append(player.rect.x)
-    last_list.append(player.rect.y)
     hits = pygame.sprite.spritecollide(player,mapa_com_blocos, False)
     if len(hits)>0:
+        if player.speedx > 0:
+            player.rect.right =  hits[0].rect.left
+        if player.speedx <0:
+            player.rect.left =  hits[0].rect.right
+        if player.speedy >0:
+            player.rect.bottom =  hits[0].rect.top
+        if player.speedy <0:
+            player.rect.top   =  hits[0].rect.bottom
         player.speedx =0 
         player.speedy =0 
-        player.rect.x = last_list[2] 
-        player.rect.y = last_list[3] 
-    del last_list[0]
-    del last_list[1]
 
     # TELETRANSPORTE PACMAN
     if player.rect.right > ALTURA:
