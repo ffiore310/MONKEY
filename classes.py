@@ -92,7 +92,7 @@ class Fantasma(pygame.sprite.Sprite):
         self.rect.y = c * BLOCO_ALTURA
         self.speedx = 5
         self.speedy = 0
-
+        self.saida = MAPA[11][18]
     
     
     def update (self):
@@ -115,6 +115,11 @@ class Fantasma(pygame.sprite.Sprite):
             elif self.speedx < 0:
                 self.rect.left = colisao.rect.right
                 self.speedx = -self.speedx
+        if self.rect.x == 11*BLOCO_LARGURA and self.rect.y == 18*BLOCO_ALTURA:
+            self.speedx = 0
+            self.speedy = -5
+            self.rect.y += self.speedy
+            self.rect.x += self.speedx
 
 class Comidinha(pygame.sprite.Sprite):
     def __init__(self, img, x, y):
