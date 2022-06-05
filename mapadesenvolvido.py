@@ -146,10 +146,37 @@ while game:
         player.rect.x = 1080
         player.rect.y = 330
 
+    #COLISÃO COMIDINHAS 
+    hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
+    for comidinha in hits_comidinhas:
+        score += 100
+
+    #COLISÃO SUPER COMIDA 
+    hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
+
+    #COLISÃO FANTASMAS 
+    hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True)
+    if len(hits_fantasmas)>0:
+        player.kill()
+        lives = - 1
+
     # GERA SAIDAS
     window.fill((0,0,0))
     window.blit(player.image, player.rect)
 
     all_sprites.draw(window)
+
+     # Desenhando o score
+    text_surface = assets['score_font'].render("{:08d}".format(score), True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (ALTURA/ 2,  700)
+    window.blit(text_surface, text_rect)
+
+    # Desenhando as vidas
+    text_surface = assets['score_font'].render(chr(9829) * lives, True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.bottomleft = (10, LARGURA - 10)
+    window.blit(text_surface, text_rect)
+
     pygame.display.update()
 
