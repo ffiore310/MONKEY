@@ -88,7 +88,7 @@ for fantasmas in img_fantasmas:
     all_sprites.add(f)
     all_fantasmas.add(f)
     lugar_inicial_fantasma += 3
-    
+
 assets = {}
 assets["score_font"] = pygame.font.Font('assets/font/PressStart2P.ttf', 28)
 
@@ -127,8 +127,20 @@ while game:
 
     #ATUALIZA O JOGO
     all_sprites.update()
+
+   #COLISÃO COMIDINHAS 
     hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
+    for comidinha in hits_comidinhas:
+        score += 100
+
+    #COLISÃO SUPER COMIDA 
     hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
+
+    #COLISÃO FANTASMAS 
+    hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True)
+    if len(hits_fantasmas)>0:
+        player.kill()
+        lives = - 1
 
     # COLISAO PAC-PAREDE
     hits = pygame.sprite.spritecollide(player,mapa_com_blocos, False)
@@ -152,27 +164,13 @@ while game:
         player.rect.x = 1080
         player.rect.y = 330
 
-    #COLISÃO COMIDINHAS 
-    hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
-    for comidinha in hits_comidinhas:
-        score += 100
-
-    #COLISÃO SUPER COMIDA 
-    hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
-
-    #COLISÃO FANTASMAS 
-    hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True)
-    if len(hits_fantasmas)>0:
-        player.kill()
-        lives = - 1
-
     # GERA SAIDAS
     window.fill((0,0,0))
     window.blit(player.image, player.rect)
 
     all_sprites.draw(window)
 
-     # Desenhando o score
+    # Desenhando o score
     text_surface = assets['score_font'].render("{:08d}".format(score), True, (255, 255, 255))
     text_rect = text_surface.get_rect()
     text_rect.midtop = (ALTURA/ 2,  700)
