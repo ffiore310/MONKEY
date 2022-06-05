@@ -93,7 +93,7 @@ last_list = [0,0]
 all_sprites.add(player)
 lugar_inicial_fantasma = 13   
 for fantasmas in img_fantasmas:
-    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11)
+    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos)
     all_sprites.add(f)
     all_fantasmas.add(f)
     lugar_inicial_fantasma += 3
