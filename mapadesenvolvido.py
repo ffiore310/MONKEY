@@ -13,7 +13,7 @@ pygame.display.set_caption('PAC-MAN')
 
 img_bloco = pygame.image.load('assets/img/bloco_jogo_pacman.jpg').convert()
 img_bloco = pygame.transform.scale(img_bloco, (30,30))
-mapa_com_blocos = pygame.sprite.Group()
+all_blocos = pygame.sprite.Group()
 
 img_comidinha = pygame.image.load('assets/img/bolinha.png').convert_alpha()
 img_comidinha = pygame.transform.scale(img_comidinha, (10,10))
@@ -30,7 +30,7 @@ for l in range(len(MAPA)):
     for c in range(len(MAPA[l])):
         if MAPA[l][c] == 0:
             bloco = Bloco(img_bloco, c, l)
-            mapa_com_blocos.add(bloco)
+            all_blocos.add(bloco)
             all_sprites.add(bloco)
 
 for x in range(len(MAPA)):
@@ -84,7 +84,7 @@ last_list = [0,0]
 all_sprites.add(player)
 lugar_inicial_fantasma = 13   
 for fantasmas in img_fantasmas:
-    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11)
+    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, all_blocos)
     all_sprites.add(f)
     all_fantasmas.add(f)
     lugar_inicial_fantasma += 3
@@ -125,7 +125,7 @@ while game:
     hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
 
     # COLISAO PAC-PAREDE
-    hits = pygame.sprite.spritecollide(player,mapa_com_blocos, False)
+    hits = pygame.sprite.spritecollide(player,all_blocos, False)
     if len(hits)>0:
         if player.speedx > 0:
             player.rect.right =  hits[0].rect.left
