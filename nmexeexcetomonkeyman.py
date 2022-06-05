@@ -3,8 +3,17 @@ from mapa import MAPA
 import pygame
 from classes import Bloco, Comidinha, Pacman02, Fantasma, Comida
 from config import *
+import time 
 
 pygame.init()
+pygame.mixer.init()
+
+#CRIANDO SOM
+pygame.mixer.music.load('assets/snd/tgfcoder-FrozenJam-SeamlessLoop.ogg')
+pygame.mixer.music.set_volume(0.4)
+eating_sound = pygame.mixer.Sound('assets/snd/expl3.wav')
+destroy_sound = pygame.mixer.Sound('assets/snd/expl6.wav')
+pew_sound = pygame.mixer.Sound('assets/snd/pew.wav')
 
 # DEFINICAO MAPA
 
@@ -96,6 +105,7 @@ score = 0
 lives = 3
 
 # INICIANDO O JOGO
+pygame.mixer.music.play(loops=-1)
 while game:
     clock.tick(FPS)
 
@@ -132,6 +142,12 @@ while game:
     hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
     for comidinha in hits_comidinhas:
         score += 100
+    if len(hits_comidinhas) > 0:
+        # Toca o som da colisão
+        eating_sound.play()
+        time.sleep(1) # Precisa esperar senão fecha
+
+
 
     #COLISÃO SUPER COMIDA 
     hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
