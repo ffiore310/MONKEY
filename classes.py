@@ -92,6 +92,8 @@ class Fantasma(pygame.sprite.Sprite):
         self.rect.y = c * BLOCO_ALTURA
         self.speedx = 5
         self.speedy = 0
+
+    
     
     def update (self):
         self.rect.y += self.speedy
