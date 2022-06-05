@@ -88,6 +88,12 @@ for fantasmas in img_fantasmas:
     all_sprites.add(f)
     all_fantasmas.add(f)
     lugar_inicial_fantasma += 3
+    
+assets = {}
+assets["score_font"] = pygame.font.Font('assets/font/PressStart2P.ttf', 28)
+
+score = 0
+lives = 3
 
 # INICIANDO O JOGO
 while game:
