@@ -12,7 +12,7 @@ window = pygame.display.set_mode((ALTURA, LARGURA))
 pygame.display.set_caption('PAC-MAN')
 
 img_bloco = pygame.image.load('assets/img/bloco_jogo_pacman.jpg').convert()
-img_bloco = pygame.transform.scale(img_bloco, (30,30))
+img_bloco = pygame.transform.scale(img_bloco, (27,27))
 mapa_com_blocos = pygame.sprite.Group()
 
 img_comidinha = pygame.image.load('assets/img/bolinha.png').convert_alpha()
@@ -51,17 +51,17 @@ for x in range(len(MAPA)):
 # IMAGENS PACMAN
 
 pac_img_fechado = pygame.image.load('assets/img/pacman_fechado.png')
-pac_img_fechado = pygame.transform.scale(pac_img_fechado, (30,30))
+pac_img_fechado = pygame.transform.scale(pac_img_fechado, (25,25))
 pac_img_aberto = pygame.image.load('assets/img/pacman_direita.png')
-pac_img_aberto = pygame.transform.scale(pac_img_aberto, (30,30))
+pac_img_aberto = pygame.transform.scale(pac_img_aberto, (25,25))
 pac_img_aberto_esquerda = pygame.image.load('assets/img/pacman_esquerdo .png')
-pac_img_aberto_esquerda = pygame.transform.scale(pac_img_aberto_esquerda, (30,30))
+pac_img_aberto_esquerda = pygame.transform.scale(pac_img_aberto_esquerda, (25,25))
 
 pac_img_aberto_cima = pygame.image.load('assets/img/pacman_cima.png')
-pac_img_aberto_cima = pygame.transform.scale(pac_img_aberto_cima, (30,30))
+pac_img_aberto_cima = pygame.transform.scale(pac_img_aberto_cima, (25,25))
 
 pac_img_aberto_baixo = pygame.image.load('assets/img/pacman_baixo.png')
-pac_img_aberto_baixo = pygame.transform.scale(pac_img_aberto_baixo, (30,30))
+pac_img_aberto_baixo = pygame.transform.scale(pac_img_aberto_baixo, (25,25))
 
 paclist_img = [pac_img_fechado, pac_img_aberto,pac_img_aberto_esquerda, pac_img_aberto_cima, pac_img_aberto_baixo]
 
