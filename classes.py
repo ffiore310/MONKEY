@@ -81,29 +81,45 @@ class Pacman02 (pygame.sprite.Sprite):
 
 
 class Fantasma(pygame.sprite.Sprite):
-    def __init__(self, img, l, c):
+    def __init__(self, img, l, c, blocos):
         pygame.sprite.Sprite.__init__(self)
         self.l = l
         self.c = c
+        self.blocos = blocos
         self.image = img
         self.rect = self.image.get_rect()
         self.rect.x = l * BLOCO_LARGURA
         self.rect.y = c * BLOCO_ALTURA
-        self.speedx = 0
+        self.speedx = 5
         self.speedy = 0
+        self.saida = MAPA[11][18]
+    
     
     def update (self):
-        lugar = MAPA[self.l][self.c]
-        if MAPA[self.l-1][self.c] != 0:
-            self.speedy = 3
-        elif MAPA[self.l][self.c-1] != 0:
-            self.speedx = -3
-        elif MAPA[self.l+1][self.c] != 0:
-            self.speedx = -3
-        elif MAPA[self.l][self.c+1] != 0:
-            self.speedy = 3
-        self.rect.x += self.speedx
         self.rect.y += self.speedy
+        colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
+        for colisao in colisoes:
+            if self.speedy > 0:
+                self.rect.bottom = colisao.rect.top
+                self.speedy = -self.speedy
+            elif self.speedy < 0:
+                self.rect.top = colisao.rect.bottom
+                self.speedy = -self.speedy
+
+        self.rect.x += self.speedx
+        colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
+        for colisao in colisoes:
+            if self.speedx > 0:
+                self.rect.right = colisao.rect.left
+                self.speedx = -self.speedx
+            elif self.speedx < 0:
+                self.rect.left = colisao.rect.right
+                self.speedx = -self.speedx
+        if self.rect.x == 11*BLOCO_LARGURA and self.rect.y == 18*BLOCO_ALTURA:
+            self.speedx = 0
+            self.speedy = -5
+            self.rect.y += self.speedy
+            self.rect.x += self.speedx
 
 class Comidinha(pygame.sprite.Sprite):
     def __init__(self, img, x, y):
