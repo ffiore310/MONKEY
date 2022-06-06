@@ -3,8 +3,17 @@ from mapa import MAPA
 import pygame
 from classes import Bloco, Comidinha, Pacman02, Fantasma, Comida
 from config import *
+import time 
 
 pygame.init()
+pygame.mixer.init()
+
+#CRIANDO SOM
+pygame.mixer.music.load('assets/snd/tgfcoder-FrozenJam-SeamlessLoop.ogg')
+pygame.mixer.music.set_volume(0.4)
+eating_sound = pygame.mixer.Sound('assets/snd/expl3.wav')
+destroy_sound = pygame.mixer.Sound('assets/snd/expl6.wav')
+pew_sound = pygame.mixer.Sound('assets/snd/pew.wav')
 
 # DEFINICAO MAPA
 
@@ -39,6 +48,7 @@ for x in range(len(MAPA)):
             bolinha = Comidinha(img_comidinha, y+0.35, x+0.35)
             all_comidinhas.add(bolinha)
             all_sprites.add(bolinha)
+
 
 for x in range(len(MAPA)):
     for y in range(len(MAPA[x])):
@@ -96,6 +106,7 @@ score = 0
 lives = 3
 
 # INICIANDO O JOGO
+pygame.mixer.music.play(loops=-1)
 while game:
     clock.tick(FPS)
 
@@ -129,21 +140,27 @@ while game:
     all_sprites.update()
 
    #COLISÃO COMIDINHAS 
-    hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
+    hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True, pygame.sprite.collide_mask)
     for comidinha in hits_comidinhas:
         score += 100
+    if len(hits_comidinhas) > 0:
+        # Toca o som da colisão
+        eating_sound.play()
+        time.sleep(0.01) # Precisa esperar senão fecha
+
+
 
     #COLISÃO SUPER COMIDA 
-    hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
+    hits_comida = pygame.sprite.spritecollide(player, all_comidas, True, pygame.sprite.collide_mask)
 
     #COLISÃO FANTASMAS 
-    hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True)
+    hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True, pygame.sprite.collide_mask)
     if len(hits_fantasmas)>0:
         player.kill()
         lives = - 1
 
     # COLISAO PAC-PAREDE
-    hits = pygame.sprite.spritecollide(player,mapa_com_blocos, False)
+    hits = pygame.sprite.spritecollide( player, mapa_com_blocos, False)
     if len(hits)>0:
         if player.speedx > 0:
             player.rect.right =  hits[0].rect.left
