@@ -9,12 +9,10 @@ pygame.init()
 pygame.mixer.init()
 
 #CRIANDO SOM
-pygame.mixer.music.load('assets/snd/tgfcoder-FrozenJam-SeamlessLoop.ogg')
-pygame.mixer.music.set_volume(0.4)
-eating_sound = pygame.mixer.Sound('assets/snd/expl3.wav')
-destroy_sound = pygame.mixer.Sound('assets/snd/expl6.wav')
-pew_sound = pygame.mixer.Sound('assets/snd/pew.wav')
-
+pygame.mixer.music.load('assets/snd/pacman_music.wav')
+pygame.mixer.music.set_volume(0.3)
+eating_sound = pygame.mixer.Sound('assets/snd/comidinha.wav')
+comida_sound= pygame.mixer.Sound('assets/snd/comida_sound.wav')
 # DEFINICAO MAPA
 
 window = pygame.display.set_mode((ALTURA, LARGURA))
@@ -142,7 +140,7 @@ while game:
    #COLISÃO COMIDINHAS 
     hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True, pygame.sprite.collide_mask)
     for comidinha in hits_comidinhas:
-        score += 100
+        score += 10
     if len(hits_comidinhas) > 0:
         # Toca o som da colisão
         eating_sound.play()
@@ -152,6 +150,13 @@ while game:
 
     #COLISÃO SUPER COMIDA 
     hits_comida = pygame.sprite.spritecollide(player, all_comidas, True, pygame.sprite.collide_mask)
+    for comida in hits_comida:
+        score += 20
+    if len(hits_comida) > 0:
+        # Toca o som da colisão
+        comida_sound.play()
+        time.sleep(0.01) # Precisa esperar senão fecha
+
 
     #COLISÃO FANTASMAS 
     hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True, pygame.sprite.collide_mask)
