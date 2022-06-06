@@ -29,7 +29,8 @@ class Pacman02 (pygame.sprite.Sprite):
         self.last = 1
         self.last_update = pygame.time.get_ticks()
         self.frame_ticks = 50
-
+        self.mask = pygame.mask.from_surface(self.image)
+        
     def update(self):
         self.rect.x += self.speedx 
         self.rect.y += self.speedy
@@ -93,7 +94,7 @@ class Fantasma(pygame.sprite.Sprite):
         self.speedx = 5
         self.speedy = 0
         self.saida = MAPA[11][18]
-    
+        self.mask = pygame.mask.from_surface(self.image)
     
     def update (self):
         self.rect.y += self.speedy
@@ -128,6 +129,7 @@ class Comidinha(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x * COMIDINHA_WIDTH
         self.rect.y = y * COMIDINHA_HEIGHT
+        self.mask = pygame.mask.from_surface(self.image)
     def update(self):
         pass
 
@@ -138,6 +140,7 @@ class Comida (pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x * COMIDA_WIDTH
         self.rect.y = y * COMIDA_HEIGHT
+        self.mask = pygame.mask.from_surface(self.image)
     def update(self):
         pass
 

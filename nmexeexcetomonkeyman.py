@@ -49,6 +49,7 @@ for x in range(len(MAPA)):
             all_comidinhas.add(bolinha)
             all_sprites.add(bolinha)
 
+
 for x in range(len(MAPA)):
     for y in range(len(MAPA[x])):
         if MAPA[x][y] == 4:
@@ -139,27 +140,27 @@ while game:
     all_sprites.update()
 
    #COLISÃO COMIDINHAS 
-    hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True)
+    hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True, pygame.sprite.collide_mask)
     for comidinha in hits_comidinhas:
         score += 100
     if len(hits_comidinhas) > 0:
         # Toca o som da colisão
         eating_sound.play()
-        time.sleep(1) # Precisa esperar senão fecha
+        time.sleep(0.01) # Precisa esperar senão fecha
 
 
 
     #COLISÃO SUPER COMIDA 
-    hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
+    hits_comida = pygame.sprite.spritecollide(player, all_comidas, True, pygame.sprite.collide_mask)
 
     #COLISÃO FANTASMAS 
-    hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True)
+    hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, True, pygame.sprite.collide_mask)
     if len(hits_fantasmas)>0:
         player.kill()
         lives = - 1
 
     # COLISAO PAC-PAREDE
-    hits = pygame.sprite.spritecollide(player,mapa_com_blocos, False)
+    hits = pygame.sprite.spritecollide( player, mapa_com_blocos, False)
     if len(hits)>0:
         if player.speedx > 0:
             player.rect.right =  hits[0].rect.left
