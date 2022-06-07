@@ -123,6 +123,8 @@ keys_down = {}
 pygame.mixer.music.play(loops=-1)
 
 tela_inicial = pygame.image.load('assets/img/tela_inicial.png')
+tela_final = pygame.image.load('assets/img/tela_gameover.png')
+tela_final2 = pygame.image.load('assets/img/tela_gameover2.png')
 
 black=(0,0,0)
 fecha=False
@@ -184,52 +186,70 @@ while state != DONE:
             comidinha_total -=1
 
     if comidinha_total == 0:
-        state = DONE
+        black=(0,0,0)
+        fecha=False
+        while (fecha==False):
+            window.fill(black)
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_X:
+                        fecha=True
+            window.blit(tela_final2,(100, 100))
+            pygame.display.flip()
 
-        #COLISÃO SUPER COMIDA 
-        hits_comida = pygame.sprite.spritecollide(player, all_comidas, True, pygame.sprite.collide_mask)
-        if len(hits_comida) >0:
-            modo = TUNADO
-            hits_fantasmas01 = pygame.sprite.spritecollide(player, all_fantasmas, False)
-            if len(hits_fantasmas01)>0:
-                hits_fantasmas01[0].rect.x = l * BLOCO_LARGURA
-                hits_fantasmas01[0].rect.y = c * BLOCO_ALTURA
-        for comida in hits_comida:
-            score += 20
-        if len(hits_comida) > 0:
-            # Toca o som da colisão
-            comida_sound.play()
-            time.sleep(0.01) # Precisa esperar senão fecha
-        
-        #COLISÃO FANTASMAS 
-        hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, False, pygame.sprite.collide_mask)
-        if modo == FUGA:
+    #COLISÃO SUPER COMIDA 
+    hits_comida = pygame.sprite.spritecollide(player, all_comidas, True, pygame.sprite.collide_mask)
+    if len(hits_comida) >0:
+        modo = TUNADO
+        hits_fantasmas01 = pygame.sprite.spritecollide(player, all_fantasmas, False)
+        if len(hits_fantasmas01)>0:
+            hits_fantasmas01[0].rect.x = l * BLOCO_LARGURA
+            hits_fantasmas01[0].rect.y = c * BLOCO_ALTURA
+    for comida in hits_comida:
+        score += 20
+    if len(hits_comida) > 0:
+        # Toca o som da colisão
+        comida_sound.play()
+        time.sleep(0.01) # Precisa esperar senão fecha
+    
+    #COLISÃO FANTASMAS 
+    hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, False, pygame.sprite.collide_mask)
+    if modo == FUGA:
+        if len(hits_fantasmas) >0:
+                player.kill()
+                explosao = Explosion(player.rect.center, explosion_anim)
+                all_sprites.add(explosao)
+                lives = - 1
+                state = EXPLODING
+                keys_down = {}
+                explosion_tick = pygame.time.get_ticks()
+                explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
+        elif modo == TUNADO:
             if len(hits_fantasmas) >0:
-                    player.kill()
-                    explosao = Explosion(player.rect.center, explosion_anim)
-                    all_sprites.add(explosao)
-                    lives = - 1
-                    state = EXPLODING
-                    keys_down = {}
-                    explosion_tick = pygame.time.get_ticks()
-                    explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
-            elif modo == TUNADO:
-                if len(hits_fantasmas) >0:
-                    hits_fantasmas[0].kill()
-                    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos  )
-                    all_sprites.add(f)
-                    all_fantasmas.add(f)
+                hits_fantasmas[0].kill()
+                f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos  )
+                all_sprites.add(f)
+                all_fantasmas.add(f)
 
-        elif state == EXPLODING:
-            now = pygame.time.get_ticks()
-            if now - explosion_tick > explosion_duration:
-                if lives == 0:
-                    state = DONE
-                else:
-                    state = PLAYING
-                    player =  Pacman02(paclist_img)
-                    all_sprites.add(player)
+    elif state == EXPLODING:
+        now = pygame.time.get_ticks()
+        if now - explosion_tick > explosion_duration:
+            if lives == 0:
+                black=(0,0,0)
+                fecha=False
+                while (fecha==False):
+                    window.fill(black)
+                    for event in pygame.event.get():
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_X:
+                                fecha=True
+                    window.blit(tela_final,(150, 150))
+                    pygame.display.flip()  
 
+            else:
+                state = PLAYING
+                player =  Pacman02(paclist_img)
+                all_sprites.add(player)
 
     # COLISAO PAC-PAREDE
     hits = pygame.sprite.spritecollide(player,mapa_com_blocos, False)
