@@ -2,6 +2,57 @@ import pygame
 import random
 from mapa import MAPA
 from config import *
+from classes import Bloco, Comidinha, Comida
+
+class Fantasma(pygame.sprite.Sprite):
+    def __init__(self,img01,l, c, blocos,state, img02):
+        pygame.sprite.Sprite.__init__(self)
+        self.l = l
+        self.c = c
+        self.blocos = blocos
+        self.rect = self.image.get_rect()
+        self.rect.x = l * BLOCO_LARGURA
+        self.rect.y = c * BLOCO_ALTURA
+        self.speedx = 5
+        self.speedy = 0
+        self.saida = MAPA[11][18]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.orientacao = random.randint(0, 3)
+        self.tempo = 50
+        self.state = state
+        self.image01 = img01
+        self.image02 = img02
+
+    def update (self):
+         colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
+         for colisao in colisoes:
+             if self.speedy > 0:
+                 self.rect.bottom = colisao.rect.top
+                 self.speedy = -self.speedy
+             elif self.speedy < 0:
+                 self.rect.top = colisao.rect.bottom
+                 self.speedy = -self.speedy
+
+         self.rect.x += self.speedx
+         colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
+         for colisao in colisoes:
+             if self.speedx > 0:
+                 self.rect.right = colisao.rect.left
+                 self.speedx = -self.speedx
+             elif self.speedx < 0:
+                 self.rect.left = colisao.rect.right
+                 self.speedx = -self.speedx
+         if self.rect.x == 11*BLOCO_LARGURA and self.rect.y == 18*BLOCO_ALTURA:
+             self.speedx = 0
+             self.speedy = -5
+             self.rect.y += self.speedy
+             self.rect.x += self.speedx
+
+    def tunado(self):
+        if self.state == TUNADO:
+            self.image = self.image01
+        elif self.state == FUGA:
+            self.image = self.image02
 
 class Explosion(pygame.sprite.Sprite):
     # Construtor da classe.
@@ -108,16 +159,11 @@ class Pacman02 (pygame.sprite.Sprite):
                 else:
                     self.image = self.lista_img[self.last]
         
-import random
-from mapa import MAPA
-import pygame
-from classes import Bloco, Comidinha, Fantasma, Comida
-from config import *
+
 
 pygame.init()
 
 # DEFINICAO MAPA
-
 window = pygame.display.set_mode((ALTURA, LARGURA))
 pygame.display.set_caption('PAC-MAN')
 
@@ -182,11 +228,14 @@ for i in range(10):
     img = pygame.transform.scale(img, (25, 25))
     explosion_anim.append(img)
 
+# IMAGENS FANTASMAS
 img_fantasmas = []
 for name in ['fantasma_azul.png', 'fantasma_laranja.png', 'fantasma_rosa.png', 'fantasma_vermelho.png']:
     img = pygame.image.load(f'assets/img/{name}')
     img = pygame.transform.scale(img, (30,30))
     img_fantasmas.append(img)
+img_fantasma_puto = pygame.image.load('assets/img/super_fantasma.png')
+img_fantasma_puto = pygame.transform.scale(img_fantasma_puto, (30,30))
 
 DONE = 0
 PLAYING = 1
@@ -195,7 +244,7 @@ state = PLAYING
 FUGA = 3
 TUNADO = 4
 modo = FUGA
-
+conta_fts = 0
 
 assets = {}
 assets["score_font"] = pygame.font.Font('assets/font/PressStart2P.ttf', 28)
@@ -215,7 +264,7 @@ player = Pacman02(paclist_img)
 all_sprites.add(player)
 lugar_inicial_fantasma = 13   
 for fantasmas in img_fantasmas:
-    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos  )
+    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos,state,img_fantasma_puto)
     all_sprites.add(f)
     all_fantasmas.add(f)
     lugar_inicial_fantasma += 3
@@ -291,7 +340,10 @@ while state != DONE:
         elif modo == TUNADO:
             if len(hits_fantasmas) >0:
                 hits_fantasmas[0].kill()
-                f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos  )
+                conta_fts += 1
+                if conta_fts > 3:
+                    conta_fts = 0
+                f = Fantasma(img_fantasmas[conta_fts],13, 11, mapa_com_blocos  )
                 all_sprites.add(f)
                 all_fantasmas.add(f)
 
