@@ -1,7 +1,7 @@
 import random
 from mapa import MAPA
 import pygame
-from classes import Bloco, Comidinha, Pacman02, Fantasma, Comida
+from classes import Bloco, Comidinha, Pacman02, Fantasma, Comida, Explosion
 from config import *
 import time 
 
@@ -98,7 +98,6 @@ for name in ['fantasma_azul.png', 'fantasma_laranja.png', 'fantasma_rosa.png', '
 
 #ACERTANDO OS FPS
 clock = pygame.time.Clock()
-FPS = 30
 
 # CRIANDO PERSONAGENS
 player = Pacman02(paclist_img)
@@ -113,13 +112,6 @@ for fantasmas in img_fantasmas:
     lugar_inicial_fantasma += 3
 
 # STATES DO JOGO
-DONE = 0
-PLAYING = 1
-EXPLODING = 2
-state = PLAYING
-FUGA = 3
-TUNADO = 4
-modo = FUGA
 
 
 assets = {}
@@ -131,6 +123,26 @@ keys_down = {}
 
 # INICIANDO O JOGO
 pygame.mixer.music.play(loops=-1)
+
+black=(0,0,0)
+fecha=False
+while (fecha==False):
+    window.fill(black)
+    fonte=pygame.font.SysFont("arial black", 40)
+    titulo = fonte.render("PACMAN", True, (255, 0, 0))
+    regra = fonte.render('Apenas 1 jogador', True, (0, 0, 255))
+    inicio = fonte.render('Pressione ESPACO para jogar!', True, (170, 132, 58))
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                fecha=True
+    window.blit(titulo,(100,100))
+    window.blit(regra,(250,250))
+    window.blit(inicio,(400,400))
+
+    pygame.display.flip()
+
+comidinha_total = 307
 while state != DONE:
     clock.tick(FPS)
 
@@ -175,6 +187,9 @@ while state != DONE:
         # Toca o som da colisão
             eating_sound.play()
             time.sleep(0.01) # Precisa esperar senão fecha
+            comidinha_total -=1
+    if comidinha_total == 0:
+        state = DONE
 
 
 
