@@ -122,21 +122,17 @@ keys_down = {}
 # INICIANDO O JOGO
 pygame.mixer.music.play(loops=-1)
 
+tela_inicial = pygame.image.load('assets/img/tela_inicial.png')
+
 black=(0,0,0)
 fecha=False
 while (fecha==False):
     window.fill(black)
-    fonte=pygame.font.SysFont("arial black", 40)
-    titulo = fonte.render("PACMAN", True, (255, 0, 0))
-    regra = fonte.render('Apenas 1 jogador', True, (0, 0, 255))
-    inicio = fonte.render('Pressione ESPACO para jogar!', True, (170, 132, 58))
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 fecha=True
-    window.blit(titulo,(100,100))
-    window.blit(regra,(250,250))
-    window.blit(inicio,(400,400))
+    window.blit(tela_inicial,(150, 150))
 
     pygame.display.flip()
 
