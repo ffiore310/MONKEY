@@ -192,6 +192,10 @@ DONE = 0
 PLAYING = 1
 EXPLODING = 2
 state = PLAYING
+FUGA = 3
+TUNADO = 4
+modo = FUGA
+
 
 assets = {}
 assets["score_font"] = pygame.font.Font('assets/font/PressStart2P.ttf', 28)
@@ -264,23 +268,32 @@ while state != DONE:
         #COLISÃO SUPER COMIDA 
         hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
         if len(hits_comida) >0:
+            modo = TUNADO
             hits_fantasmas01 = pygame.sprite.spritecollide(player, all_fantasmas, False)
             if len(hits_fantasmas01)>0:
                 hits_fantasmas01[0].rect.x = l * BLOCO_LARGURA
                 hits_fantasmas01[0].rect.y = c * BLOCO_ALTURA
+            
 
     
         #COLISÃO FANTASMAS 
         hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, False)
-        if len(hits_fantasmas) >0:
-            player.kill()
-            explosao = Explosion(player.rect.center, explosion_anim)
-            all_sprites.add(explosao)
-            lives = - 1
-            state = EXPLODING
-            keys_down = {}
-            explosion_tick = pygame.time.get_ticks()
-            explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
+        if modo == FUGA:
+            if len(hits_fantasmas) >0:
+                player.kill()
+                explosao = Explosion(player.rect.center, explosion_anim)
+                all_sprites.add(explosao)
+                lives = - 1
+                state = EXPLODING
+                keys_down = {}
+                explosion_tick = pygame.time.get_ticks()
+                explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
+        elif modo == TUNADO:
+            if len(hits_fantasmas) >0:
+                hits_fantasmas[0].kill()
+                f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos  )
+                all_sprites.add(f)
+                all_fantasmas.add(f)
 
     elif state == EXPLODING:
         now = pygame.time.get_ticks()
