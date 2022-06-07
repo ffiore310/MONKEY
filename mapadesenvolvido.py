@@ -9,11 +9,10 @@ pygame.init()
 pygame.mixer.init()
 
 #CRIANDO SOM
-pygame.mixer.music.load('assets/snd/tgfcoder-FrozenJam-SeamlessLoop.ogg')
-pygame.mixer.music.set_volume(0.4)
-eating_sound = pygame.mixer.Sound('assets/snd/expl3.wav')
-destroy_sound = pygame.mixer.Sound('assets/snd/expl6.wav')
-pew_sound = pygame.mixer.Sound('assets/snd/pew.wav')
+pygame.mixer.music.load('assets/snd/pacman_music.wav')
+pygame.mixer.music.set_volume(0.3)
+eating_sound = pygame.mixer.Sound('assets/snd/comidinha.wav')
+comida_sound= pygame.mixer.Sound('assets/snd/comida_sound.wav')
 
 # DEFINICAO MAPA
 
@@ -113,7 +112,6 @@ for fantasmas in img_fantasmas:
 
 # STATES DO JOGO
 
-
 assets = {}
 assets["score_font"] = pygame.font.Font('assets/font/PressStart2P.ttf', 28)
 score = 0
@@ -188,22 +186,27 @@ while state != DONE:
             eating_sound.play()
             time.sleep(0.01) # Precisa esperar senão fecha
             comidinha_total -=1
+
     if comidinha_total == 0:
         state = DONE
 
-
-
         #COLISÃO SUPER COMIDA 
-        hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
+        hits_comida = pygame.sprite.spritecollide(player, all_comidas, True, pygame.sprite.collide_mask)
         if len(hits_comida) >0:
-                modo = TUNADO
-                hits_fantasmas01 = pygame.sprite.spritecollide(player, all_fantasmas, False)
-                if len(hits_fantasmas01)>0:
-                    hits_fantasmas01[0].rect.x = l * BLOCO_LARGURA
-                    hits_fantasmas01[0].rect.y = c * BLOCO_ALTURA
-                
+            modo = TUNADO
+            hits_fantasmas01 = pygame.sprite.spritecollide(player, all_fantasmas, False)
+            if len(hits_fantasmas01)>0:
+                hits_fantasmas01[0].rect.x = l * BLOCO_LARGURA
+                hits_fantasmas01[0].rect.y = c * BLOCO_ALTURA
+        for comida in hits_comida:
+            score += 20
+        if len(hits_comida) > 0:
+            # Toca o som da colisão
+            comida_sound.play()
+            time.sleep(0.01) # Precisa esperar senão fecha
+        
         #COLISÃO FANTASMAS 
-        hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, False)
+        hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, False, pygame.sprite.collide_mask)
         if modo == FUGA:
             if len(hits_fantasmas) >0:
                     player.kill()
