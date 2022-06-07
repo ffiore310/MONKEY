@@ -95,32 +95,56 @@ class Fantasma(pygame.sprite.Sprite):
         self.speedy = 0
         self.saida = MAPA[11][18]
         self.mask = pygame.mask.from_surface(self.image)
+        self.orientacao = random.randint(0, 3)
+        self.tempo = 50
     
     def update (self):
-        self.rect.y += self.speedy
-        colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
-        for colisao in colisoes:
-            if self.speedy > 0:
-                self.rect.bottom = colisao.rect.top
-                self.speedy = -self.speedy
-            elif self.speedy < 0:
-                self.rect.top = colisao.rect.bottom
-                self.speedy = -self.speedy
+        # colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
+        # for colisao in colisoes:
+        #     if self.speedy > 0:
+        #         self.rect.bottom = colisao.rect.top
+        #         self.speedy = -self.speedy
+        #     elif self.speedy < 0:
+        #         self.rect.top = colisao.rect.bottom
+        #         self.speedy = -self.speedy
 
-        self.rect.x += self.speedx
+        # self.rect.x += self.speedx
+        # colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
+        # for colisao in colisoes:
+        #     if self.speedx > 0:
+        #         self.rect.right = colisao.rect.left
+        #         self.speedx = -self.speedx
+        #     elif self.speedx < 0:
+        #         self.rect.left = colisao.rect.right
+        #         self.speedx = -self.speedx
+        # if self.rect.x == 11*BLOCO_LARGURA and self.rect.y == 18*BLOCO_ALTURA:
+        #     self.speedx = 0
+        #     self.speedy = -5
+        #     self.rect.y += self.speedy
+        #     self.rect.x += self.speedx
         colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
-        for colisao in colisoes:
-            if self.speedx > 0:
-                self.rect.right = colisao.rect.left
-                self.speedx = -self.speedx
-            elif self.speedx < 0:
-                self.rect.left = colisao.rect.right
-                self.speedx = -self.speedx
-        if self.rect.x == 11*BLOCO_LARGURA and self.rect.y == 18*BLOCO_ALTURA:
+        if len(colisoes) > 0 or self.tempo == 0:
+            o = self.orientacao
+            self.orientacao = random.randint(1, 3)
+            while o == self.orientacao:
+                self.orientacao = random.randint(1, 3)
+            self.tempo = 50
+        if self.orientacao == 0:
+            self.speedx = 0
+            self.speedy = 5
+        if self.orientacao == 1:
+            self.speedx = -5
+            self.speedy = 0
+        if self.orientacao == 2:
             self.speedx = 0
             self.speedy = -5
-            self.rect.y += self.speedy
-            self.rect.x += self.speedx
+        if self.orientacao == 3:
+            self.speedx = 5
+            self.speedy = 0
+        self.rect.y += self.speedy
+        self.rect.x += self.speedx
+        self.tempo -= 1
+
 
 class Comidinha(pygame.sprite.Sprite):
     def __init__(self, img, x, y):
