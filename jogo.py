@@ -98,7 +98,6 @@ keys_down = {}
 
 #ACERTANDO OS FPS
 clock = pygame.time.Clock()
-FPS = 30
 
 #   CRIANDO VARIAVEL SUPER COLISAO
 time_colisao_super = 0
@@ -224,7 +223,6 @@ while state != DONE:
             time.sleep(0.01) # Precisa esperar senão fecha
             comidinha_total -=1
         if comidinha_total == 0:
-            black=(0,0,0)
             fecha=False
             while (fecha==False):
                 window.fill(black)
