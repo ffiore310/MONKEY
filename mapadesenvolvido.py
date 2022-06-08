@@ -103,12 +103,22 @@ player = Pacman02(paclist_img)
 last_list = [0,0]
 
 all_sprites.add(player)
-lugar_inicial_fantasma = 13   
+contador = 1
+linha_inicial_fantasmas = 5
+coluna_inicial_fantasmas = 8
 for fantasmas in img_fantasmas:
-    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos)
+    f = Fantasma(fantasmas, coluna_inicial_fantasmas, linha_inicial_fantasmas, mapa_com_blocos)
     all_sprites.add(f)
     all_fantasmas.add(f)
-    lugar_inicial_fantasma += 3
+    print('{0},{1},{2}'.format(contador,linha_inicial_fantasmas, coluna_inicial_fantasmas))
+    if contador == 1:
+        coluna_inicial_fantasmas = 28
+    elif contador == 2:
+        linha_inicial_fantasmas = 17
+        coluna_inicial_fantasmas = 8
+    elif contador == 3:
+        coluna_inicial_fantasmas = 28
+    contador += 1
 
 # STATES DO JOGO
 
