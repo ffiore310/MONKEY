@@ -23,5 +23,11 @@ state = PLAYING
 FUGA = 3
 TUNADO = 4
 modo = FUGA
+conta_fts = 0
 
 lista_speed = [0, 5, -5]
+
+FPS = 30
+
+score = 0
+lives = 3

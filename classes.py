@@ -82,12 +82,15 @@ class Pacman02 (pygame.sprite.Sprite):
 
 
 class Fantasma(pygame.sprite.Sprite):
-    def __init__(self, img, l, c, blocos):
+    def __init__(self,img,l, c, blocos, state):
         pygame.sprite.Sprite.__init__(self)
         self.l = l
         self.c = c
+        self.z = 0
         self.blocos = blocos
-        self.image = img
+        self.state = state
+        self.imag_list = img
+        self.image = img[self.z]
         self.rect = self.image.get_rect()
         self.rect.x = l * BLOCO_LARGURA
         self.rect.y = c * BLOCO_ALTURA
@@ -101,6 +104,12 @@ class Fantasma(pygame.sprite.Sprite):
         self.tempo = 50
     
     def update (self):
+         self.z = 0
+         if self.state == TUNADO:
+            self.image = self.imag_list[self.z]
+         elif self.state == FUGA:
+             self.z +=1
+             self.image = self.imag_list[self.z]
          colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
          self.rect.y += self.speedy
          for colisao in colisoes:
@@ -136,29 +145,6 @@ class Fantasma(pygame.sprite.Sprite):
                     self.speedy = -5
                 else:
                     self.speedy = 0
-         
-        #colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
-        #if len(colisoes) > 0 or self.tempo == 0:
-        #    o = self.orientacao
-        #    self.orientacao = random.randint(1, 3)
-        #    while o == self.orientacao:
-        #        self.orientacao = random.randint(1, 3)
-        #    self.tempo = 50
-        #if self.orientacao == 0:
-        #    self.speedx = 0
-        #    self.speedy = 5
-        #if self.orientacao == 1:
-        #    self.speedx = -5
-        #    self.speedy = 0
-        #if self.orientacao == 2:
-        #    self.speedx = 0
-        #    self.speedy = -5
-        #if self.orientacao == 3:
-        #    self.speedx = 5
-        #    self.speedy = 0
-        #self.rect.y += self.speedy
-        #self.rect.x += self.speedx
-        #self.tempo -= 1
 
 
 class Comidinha(pygame.sprite.Sprite):
@@ -221,19 +207,6 @@ class Explosion(pygame.sprite.Sprite):
                 self.image = self.explosion_anim[self.frame]
                 self.rect = self.image.get_rect()
                 self.rect.center = center
-
-    class Fantasma_inicial(pygame.sprite.Sprite):
-        def __init__(self, img, l, c, porta):
-            self.image = img
-            self.l = l
-            self.c = c
-            self.rect.x = l * BLOCO_LARGURA
-            self.rect.y = c * BLOCO_ALTURA
-            self.speedx = 0
-            self.speedy = 0
-            self.porta = porta
-        def update():
-            pass
 
     
     
