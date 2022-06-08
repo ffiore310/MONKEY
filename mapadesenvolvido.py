@@ -123,6 +123,7 @@ keys_down = {}
 pygame.mixer.music.play(loops=-1)
 
 tela_inicial = pygame.image.load('assets/img/tela_inicial.png')
+tela_inicial2 = pygame.image.load('assets/img/tela_inicial2.png')
 tela_final = pygame.image.load('assets/img/tela_gameover.png')
 tela_final2 = pygame.image.load('assets/img/tela_gameover2.png')
 
@@ -136,6 +137,17 @@ while (fecha==False):
                 fecha=True
     window.blit(tela_inicial,(150, 150))
 
+    pygame.display.flip()
+
+black=(0,0,0)
+fecha=False
+while (fecha==False):
+    window.fill(black)
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_X:
+                fecha=True
+    window.blit(tela_inicial2,(100, 100))
     pygame.display.flip()
 
 comidinha_total = 307
