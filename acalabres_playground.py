@@ -267,6 +267,9 @@ keys_down = {}
 clock = pygame.time.Clock()
 FPS = 30
 
+#   CRIANDO VARIAVEL SUPER COLISAO
+time_colisao_super = 0
+
 # CRIANDO PERSONAGENS
 player = Pacman02(paclist_img)
 
@@ -300,7 +303,7 @@ f2 = Fantasma(lista_img_f2,coluna_inicial_fantasmas, linha_inicial_fantasmas, ma
 all_sprites.add(f2)
 all_fantasmas.add(f2)
 
-# CRIANDO FANTASMAS F2
+# CRIANDO FANTASMAS F3
 linha_inicial_fantasmas = 17
 coluna_inicial_fantasmas = 28   
 img_fantasmas[3]
@@ -361,13 +364,18 @@ while state != DONE:
             f1.state = TUNADO
             f2.state = TUNADO
             f3.state = TUNADO
-            hits_fantasmas01 = pygame.sprite.spritecollide(player, all_fantasmas, False)
-            if len(hits_fantasmas01)>0:
-                hits_fantasmas01[0].rect.x = l * BLOCO_LARGURA
-                hits_fantasmas01[0].rect.y = c * BLOCO_ALTURA
+            time_colisao_super = pygame.time.get_ticks()
+        
+        #TEMPO MODO TUNADO
+        agr = pygame.time.get_ticks()
+        a = (agr - time_colisao_super) /300
+        if a  > 35:
+            modo = FUGA
+            f0.state = FUGA
+            f1.state = FUGA
+            f2.state = FUGA
+            f3.state = FUGA
             
-
-    
         #COLISÃO FANTASMAS 
         hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, False)
         if modo == FUGA:
@@ -382,14 +390,25 @@ while state != DONE:
                 explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
         elif modo == TUNADO:
             if len(hits_fantasmas) >0:
-                hits_fantasmas[0].kill()
                 conta_fts += 1
                 if conta_fts > 3:
                     conta_fts = 0
-                lista_f = [img_fantasma_puto ,img_fantasmas[conta_fts]]
-                f = Fantasma(lista_f,13, 11, mapa_com_blocos, state, )
-                all_sprites.add(f)
-                all_fantasmas.add(f)
+                # CRIANDO FANTASMAS F0
+                if conta_fts == 0: 
+                    hits_fantasmas[0].rect.x = 8* BLOCO_LARGURA
+                    hits_fantasmas[0].rect.y = 5* BLOCO_ALTURA
+                # CRIANDO FANTASMAS F1
+                if conta_fts == 1:
+                    hits_fantasmas[0].rect.x = 28* BLOCO_LARGURA
+                    hits_fantasmas[0].rect.y = 5* BLOCO_ALTURA
+                # CRIANDO FANTASMAS F2
+                if conta_fts == 2:
+                    hits_fantasmas[0].rect.x = 8* BLOCO_LARGURA
+                    hits_fantasmas[0].rect.y = 17* BLOCO_ALTURA
+                # CRIANDO FANTASMAS F2
+                if conta_fts == 3:
+                    hits_fantasmas[0].rect.x = 28* BLOCO_LARGURA
+                    hits_fantasmas[0].rect.y = 17 * BLOCO_ALTURA
 
     elif state == EXPLODING:
         now = pygame.time.get_ticks()
@@ -426,6 +445,7 @@ while state != DONE:
         player.rect.y = 330
 
 
+
     # GERA SAIDAS
     window.fill((0,0,0))
     window.blit(player.image, player.rect)
@@ -445,7 +465,4 @@ while state != DONE:
     window.blit(text_surface, text_rect)
 
     pygame.display.update()
-
-
-
 
