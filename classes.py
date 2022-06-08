@@ -91,37 +91,52 @@ class Fantasma(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = l * BLOCO_LARGURA
         self.rect.y = c * BLOCO_ALTURA
-        self.speedx = 5
-        self.speedy = 0
-        self.saida = MAPA[11][18]
+        self.speedx = random.choice(lista_speed)
+        if self.speedx == 0:
+            self.speedy = -5
+        else:
+            self.speedy = 0
         self.mask = pygame.mask.from_surface(self.image)
         self.orientacao = random.randint(0, 3)
         self.tempo = 50
     
     def update (self):
          colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
+         self.rect.y += self.speedy
          for colisao in colisoes:
-             if self.speedy > 0:
-                 self.rect.bottom = colisao.rect.top
-                 self.speedy = -self.speedy
-             elif self.speedy < 0:
-                 self.rect.top = colisao.rect.bottom
-                 self.speedy = -self.speedy
+            if self.speedy > 0:
+                self.rect.bottom = colisao.rect.top
+                self.speedy = random.choice(lista_speed)
+                if self.speedy == 0:
+                    self.speedx = -5
+                else:
+                    self.speedx = 0
+            elif self.speedy < 0:
+                self.rect.top = colisao.rect.bottom
+                self.speedy = random.choice(lista_speed)
+                if self.speedy == 0:
+                    self.speedx = -5
+                else:
+                    self.speedx = 0
 
          self.rect.x += self.speedx
          colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
          for colisao in colisoes:
-             if self.speedx > 0:
-                 self.rect.right = colisao.rect.left
-                 self.speedx = -self.speedx
-             elif self.speedx < 0:
-                 self.rect.left = colisao.rect.right
-                 self.speedx = -self.speedx
-         if self.rect.x == 11*BLOCO_LARGURA and self.rect.y == 18*BLOCO_ALTURA:
-             self.speedx = 0
-             self.speedy = -5
-             self.rect.y += self.speedy
-             self.rect.x += self.speedx
+            if self.speedx > 0:
+                self.rect.right = colisao.rect.left
+                self.speedx = random.choice(lista_speed)
+                if self.speedx == 0:
+                    self.speedy = -5
+                else:
+                    self.speedy = 0
+            elif self.speedx < 0:
+                self.rect.left = colisao.rect.right
+                self.speedx = random.choice(lista_speed)
+                if self.speedx == 0:
+                    self.speedy = -5
+                else:
+                    self.speedy = 0
+         
         #colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
         #if len(colisoes) > 0 or self.tempo == 0:
         #    o = self.orientacao
@@ -206,5 +221,19 @@ class Explosion(pygame.sprite.Sprite):
                 self.image = self.explosion_anim[self.frame]
                 self.rect = self.image.get_rect()
                 self.rect.center = center
+
+    class Fantasma_inicial(pygame.sprite.Sprite):
+        def __init__(self, img, l, c, porta):
+            self.image = img
+            self.l = l
+            self.c = c
+            self.rect.x = l * BLOCO_LARGURA
+            self.rect.y = c * BLOCO_ALTURA
+            self.speedx = 0
+            self.speedy = 0
+            self.porta = porta
+        def update():
+            pass
+
     
     
