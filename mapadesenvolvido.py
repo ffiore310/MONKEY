@@ -175,7 +175,7 @@ while state != DONE:
     all_sprites.update()
 
     if state == PLAYING:
-   #COLISÃO COMIDINHAS 
+        #COLISÃO COMIDINHAS 
         hits_comidinhas = pygame.sprite.spritecollide(player, all_comidinhas, True, pygame.sprite.collide_mask)
         for comidinha in hits_comidinhas:
             score += 100
@@ -215,7 +215,7 @@ while state != DONE:
     #COLISÃO FANTASMAS 
     hits_fantasmas = pygame.sprite.spritecollide(player, all_fantasmas, False, pygame.sprite.collide_mask)
     if modo == FUGA:
-        if len(hits_fantasmas) >0:
+        if len(hits_fantasmas) > 0:
                 player.kill()
                 explosao = Explosion(player.rect.center, explosion_anim)
                 all_sprites.add(explosao)
@@ -225,7 +225,7 @@ while state != DONE:
                 explosion_tick = pygame.time.get_ticks()
                 explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
         elif modo == TUNADO:
-            if len(hits_fantasmas) >0:
+            if len(hits_fantasmas) > 0:
                 hits_fantasmas[0].kill()
                 f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos  )
                 all_sprites.add(f)
