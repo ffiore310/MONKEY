@@ -409,6 +409,7 @@ while state != DONE:
                 if conta_fts == 3:
                     hits_fantasmas[0].rect.x = 28* BLOCO_LARGURA
                     hits_fantasmas[0].rect.y = 17 * BLOCO_ALTURA
+                score += 500
 
     elif state == EXPLODING:
         now = pygame.time.get_ticks()
