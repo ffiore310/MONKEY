@@ -5,12 +5,18 @@ from config import *
 from classes import Bloco, Comidinha, Comida
 
 class Fantasma(pygame.sprite.Sprite):
-    def __init__(self,img01,l, c, blocos,state, img02):
+    def __init__(self,img01,l, c, blocos, state, img02):
         pygame.sprite.Sprite.__init__(self)
         self.l = l
         self.c = c
         self.blocos = blocos
-        self.rect = self.image.get_rect()
+
+        #MUDANCAS ACALABRESI
+        self.state = state
+        self.image01 = img01
+        self.image02 = img02
+        self.image = img01
+        self.rect = self.image01.get_rect()
         self.rect.x = l * BLOCO_LARGURA
         self.rect.y = c * BLOCO_ALTURA
         self.speedx = 5
@@ -19,11 +25,19 @@ class Fantasma(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.orientacao = random.randint(0, 3)
         self.tempo = 50
-        self.state = state
-        self.image01 = img01
-        self.image02 = img02
+        if self.state == TUNADO:
+            self.image = self.image02
+        elif self.state == FUGA:
+            self.image = self.image01
+        
 
     def update (self):
+        # MUDANCA
+         if self.state == TUNADO:
+            self.image = self.image02
+         elif self.state == FUGA:
+            self.image = self.image01
+
          colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
          for colisao in colisoes:
              if self.speedy > 0:
@@ -48,11 +62,10 @@ class Fantasma(pygame.sprite.Sprite):
              self.rect.y += self.speedy
              self.rect.x += self.speedx
 
-    def tunado(self):
-        if self.state == TUNADO:
-            self.image = self.image01
-        elif self.state == FUGA:
-            self.image = self.image02
+        
+
+    
+        
 
 class Explosion(pygame.sprite.Sprite):
     # Construtor da classe.
@@ -264,7 +277,7 @@ player = Pacman02(paclist_img)
 all_sprites.add(player)
 lugar_inicial_fantasma = 13   
 for fantasmas in img_fantasmas:
-    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos,state,img_fantasma_puto)
+    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos,modo,img_fantasma_puto)
     all_sprites.add(f)
     all_fantasmas.add(f)
     lugar_inicial_fantasma += 3
@@ -343,7 +356,7 @@ while state != DONE:
                 conta_fts += 1
                 if conta_fts > 3:
                     conta_fts = 0
-                f = Fantasma(img_fantasmas[conta_fts],13, 11, mapa_com_blocos  )
+                f = Fantasma(img_fantasmas[conta_fts],13, 11, mapa_com_blocos, state, img_fantasma_puto)
                 all_sprites.add(f)
                 all_fantasmas.add(f)
 
