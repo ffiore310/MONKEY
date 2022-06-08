@@ -31,3 +31,4 @@ FPS = 30
 
 score = 0
 lives = 3
+black=(0,0,0)
