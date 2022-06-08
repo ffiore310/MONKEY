@@ -219,7 +219,7 @@ while state != DONE:
                 player.kill()
                 explosao = Explosion(player.rect.center, explosion_anim)
                 all_sprites.add(explosao)
-                lives = - 1
+                lives -= 1
                 state = EXPLODING
                 keys_down = {}
                 explosion_tick = pygame.time.get_ticks()
