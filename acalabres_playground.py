@@ -5,18 +5,18 @@ from config import *
 from classes import Bloco, Comidinha, Comida
 
 class Fantasma(pygame.sprite.Sprite):
-    def __init__(self,img01,l, c, blocos, state, img02):
+    def __init__(self,img,l, c, blocos, state):
         pygame.sprite.Sprite.__init__(self)
         self.l = l
         self.c = c
         self.blocos = blocos
 
         #MUDANCAS ACALABRESI
+        self.z = 0
         self.state = state
-        self.image01 = img01
-        self.image02 = img02
-        self.image = img01
-        self.rect = self.image01.get_rect()
+        self.imag_list = img
+        self.image = img[self.z]
+        self.rect = self.image.get_rect()
         self.rect.x = l * BLOCO_LARGURA
         self.rect.y = c * BLOCO_ALTURA
         self.speedx = 5
@@ -25,18 +25,15 @@ class Fantasma(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.orientacao = random.randint(0, 3)
         self.tempo = 50
-        if self.state == TUNADO:
-            self.image = self.image02
-        elif self.state == FUGA:
-            self.image = self.image01
         
-
     def update (self):
         # MUDANCA
+         self.z = 0
          if self.state == TUNADO:
-            self.image = self.image02
+            self.image = self.imag_list[self.z]
          elif self.state == FUGA:
-            self.image = self.image01
+             self.z +=1
+             self.image = self.imag_list[self.z]
 
          colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
          for colisao in colisoes:
@@ -275,13 +272,42 @@ player = Pacman02(paclist_img)
 
 
 all_sprites.add(player)
-lugar_inicial_fantasma = 13   
-for fantasmas in img_fantasmas:
-    f = Fantasma(fantasmas,lugar_inicial_fantasma, 11, mapa_com_blocos,modo,img_fantasma_puto)
-    all_sprites.add(f)
-    all_fantasmas.add(f)
-    lugar_inicial_fantasma += 3
 
+# CRIANDO FANTASMAS F0
+linha_inicial_fantasmas = 5
+coluna_inicial_fantasmas = 8 
+img_fantasmas[0]
+lista_img_f0 = [img_fantasma_puto,img_fantasmas[0]]
+f0 = Fantasma(lista_img_f0,coluna_inicial_fantasmas, linha_inicial_fantasmas, mapa_com_blocos,modo)
+all_sprites.add(f0)
+all_fantasmas.add(f0)
+
+# CRIANDO FANTASMAS F1
+linha_inicial_fantasmas = 5
+coluna_inicial_fantasmas = 28
+img_fantasmas[1]
+lista_img_f1 = [img_fantasma_puto,img_fantasmas[1]]
+f1 = Fantasma(lista_img_f1, coluna_inicial_fantasmas, linha_inicial_fantasmas, mapa_com_blocos, modo)
+all_sprites.add(f1)
+all_fantasmas.add(f1)
+
+# CRIANDO FANTASMAS F2
+linha_inicial_fantasmas = 17
+coluna_inicial_fantasmas = 8 
+img_fantasmas[2]
+lista_img_f2 = [img_fantasma_puto,img_fantasmas[2]]
+f2 = Fantasma(lista_img_f2,coluna_inicial_fantasmas, linha_inicial_fantasmas, mapa_com_blocos,modo)
+all_sprites.add(f2)
+all_fantasmas.add(f2)
+
+# CRIANDO FANTASMAS F2
+linha_inicial_fantasmas = 17
+coluna_inicial_fantasmas = 28   
+img_fantasmas[3]
+lista_img_f3 = [img_fantasma_puto,img_fantasmas[3]]
+f3 = Fantasma(lista_img_f3,coluna_inicial_fantasmas, linha_inicial_fantasmas, mapa_com_blocos,modo)
+all_sprites.add(f3)
+all_fantasmas.add(f3)
 
 
 # INICIANDO O JOGO
@@ -331,6 +357,10 @@ while state != DONE:
         hits_comida = pygame.sprite.spritecollide(player, all_comidas, True)
         if len(hits_comida) >0:
             modo = TUNADO
+            f0.state = TUNADO
+            f1.state = TUNADO
+            f2.state = TUNADO
+            f3.state = TUNADO
             hits_fantasmas01 = pygame.sprite.spritecollide(player, all_fantasmas, False)
             if len(hits_fantasmas01)>0:
                 hits_fantasmas01[0].rect.x = l * BLOCO_LARGURA
@@ -356,7 +386,8 @@ while state != DONE:
                 conta_fts += 1
                 if conta_fts > 3:
                     conta_fts = 0
-                f = Fantasma(img_fantasmas[conta_fts],13, 11, mapa_com_blocos, state, img_fantasma_puto)
+                lista_f = [img_fantasma_puto ,img_fantasmas[conta_fts]]
+                f = Fantasma(lista_f,13, 11, mapa_com_blocos, state, )
                 all_sprites.add(f)
                 all_fantasmas.add(f)
 
