@@ -267,6 +267,17 @@ while state != DONE:
                 keys_down = {}
                 explosion_tick = pygame.time.get_ticks()
                 explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
+                if lives == 0:
+                    black=(0,0,0)
+                    fecha=False
+                    while (fecha==False):
+                        window.fill(black)
+                        for event in pygame.event.get():
+                            if event.type == pygame.KEYDOWN:
+                                if event.key == pygame.K_SPACE:
+                                    fecha=True
+                        window.blit(tela_final,(150, 150))
+                        pygame.display.flip()
         elif modo == TUNADO:
             if len(hits_fantasmas) >0:
                 conta_fts += 1
