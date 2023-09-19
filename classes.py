@@ -11,9 +11,6 @@ class Bloco(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x * BLOCO_LARGURA
         self.rect.y = y * BLOCO_ALTURA
-
-    def update(self):
-        pass
     
 class Pacman02 (pygame.sprite.Sprite):
 
