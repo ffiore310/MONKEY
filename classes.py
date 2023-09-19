@@ -11,6 +11,8 @@ class Bloco(pygame.sprite.Sprite):
         self.rect.x = x * BLOCO_LARGURA
         self.rect.y = y * BLOCO_ALTURA
 
+    def update(self):
+        pass
     
 class Pacman02 (pygame.sprite.Sprite):
 
@@ -153,6 +155,8 @@ class Comidinha(pygame.sprite.Sprite):
         self.rect.x = x * COMIDINHA_WIDTH
         self.rect.y = y * COMIDINHA_HEIGHT
         self.mask = pygame.mask.from_surface(self.image)
+    def update(self):
+        pass
 
 class Comida (pygame.sprite.Sprite):
     def __init__(self, img, x, y):
@@ -162,7 +166,9 @@ class Comida (pygame.sprite.Sprite):
         self.rect.x = x * COMIDA_WIDTH
         self.rect.y = y * COMIDA_HEIGHT
         self.mask = pygame.mask.from_surface(self.image)
-    
+    def update(self):
+        pass
+
 class Explosion(pygame.sprite.Sprite):
     # Construtor da classe.
     def __init__(self, center, list_img):
