@@ -1,3 +1,4 @@
+
 import pygame
 import random
 from mapa import MAPA
@@ -10,9 +11,6 @@ class Bloco(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x * BLOCO_LARGURA
         self.rect.y = y * BLOCO_ALTURA
-
-    def update(self):
-        pass
     
 class Pacman02 (pygame.sprite.Sprite):
 
@@ -32,54 +30,34 @@ class Pacman02 (pygame.sprite.Sprite):
         self.frame_ticks = 70
         self.mask = pygame.mask.from_surface(self.image)
 
+    def update_image(self):
+        if self.speedx > 0:
+            self.last = 1
+        elif self.speedx < 0:
+            self.last = 2
+        elif self.speedy > 0:
+            self.last = 4
+        elif self.speedy < 0:
+            self.last = 3
+
+        if self.speedx != 0 or self.speedy != 0:
+            self.e = (self.e - 1) * (-1)
+            if self.e == 0:
+                self.image = self.lista_img[0]
+            else:
+                self.image = self.lista_img[self.last]
+
     def update(self):
-        self.rect.x += self.speedx 
-        self.rect.y += self.speedy 
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
 
         now = pygame.time.get_ticks()
         elapsed_ticks = now - self.last_update
 
-        if elapsed_ticks >self.frame_ticks:
+        if elapsed_ticks > self.frame_ticks:
             self.last_update = now
-            if self.speedx > 0:
-                self.last = 1
-                self.e = (self.e -1 )* (-1)
-                if self.e == 0:
-                    self.image = self.lista_img[0]
-                else:
-                    self.image = self.lista_img[1]
-
-            if self.speedx < 0:
-                self.last = 2
-                self.e = (self.e -1 )* (-1)
-                if self.e == 0:
-                    self.image = self.lista_img[0]
-                else:
-                    self.image = self.lista_img[2]
-
-            if self.speedy > 0:
-                self.last = 4
-                self.e = (self.e -1 )* (-1)
-                if self.e == 0:
-                    self.image = self.lista_img[0]
-                else:
-                    self.image = self.lista_img[4]
-
-            if self.speedy < 0:
-                self.last = 3
-                self.e = (self.e -1 )* (-1)
-                if self.e == 0:
-                    self.image = self.lista_img[0]
-                else:
-                    self.image = self.lista_img[3]
-
-            if self.speedy == 0 and self.speedx == 0:
-                self.e = (self.e -1 )* (-1)
-                if self.e == 0:
-                    self.image = self.lista_img[0]
-                else:
-                    self.image = self.lista_img[self.last]
-
+            if self.speedx != 0 or self.speedy != 0:
+                self.update_image()
 
 class Fantasma(pygame.sprite.Sprite):
     def __init__(self,img,l, c, blocos, state):
@@ -103,16 +81,18 @@ class Fantasma(pygame.sprite.Sprite):
         self.orientacao = random.randint(0, 3)
         self.tempo = 50
     
-    def update (self):
-         self.z = 0
-         if self.state == TUNADO:
+    def update_image(self):
+        self.z = 0
+        if self.state == TUNADO:
             self.image = self.imag_list[self.z]
-         elif self.state == FUGA:
-             self.z +=1
-             self.image = self.imag_list[self.z]
-         colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
-         self.rect.y += self.speedy
-         for colisao in colisoes:
+        elif self.state == FUGA:
+            self.z += 1
+            self.image = self.imag_list[self.z]
+
+    def update_collision(self):
+        colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
+        self.rect.y += self.speedy
+        for colisao in colisoes:
             if self.speedy > 0:
                 self.rect.bottom = colisao.rect.top
                 self.speedy = random.choice(lista_speed)
@@ -128,9 +108,9 @@ class Fantasma(pygame.sprite.Sprite):
                 else:
                     self.speedx = 0
 
-         self.rect.x += self.speedx
-         colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
-         for colisao in colisoes:
+        self.rect.x += self.speedx
+        colisoes = pygame.sprite.spritecollide(self, self.blocos, False)
+        for colisao in colisoes:
             if self.speedx > 0:
                 self.rect.right = colisao.rect.left
                 self.speedx = random.choice(lista_speed)
@@ -146,7 +126,6 @@ class Fantasma(pygame.sprite.Sprite):
                 else:
                     self.speedy = 0
 
-
 class Comidinha(pygame.sprite.Sprite):
     def __init__(self, img, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -155,8 +134,6 @@ class Comidinha(pygame.sprite.Sprite):
         self.rect.x = x * COMIDINHA_WIDTH
         self.rect.y = y * COMIDINHA_HEIGHT
         self.mask = pygame.mask.from_surface(self.image)
-    def update(self):
-        pass
 
 class Comida (pygame.sprite.Sprite):
     def __init__(self, img, x, y):
@@ -166,8 +143,6 @@ class Comida (pygame.sprite.Sprite):
         self.rect.x = x * COMIDA_WIDTH
         self.rect.y = y * COMIDA_HEIGHT
         self.mask = pygame.mask.from_surface(self.image)
-    def update(self):
-        pass
 
 class Explosion(pygame.sprite.Sprite):
     # Construtor da classe.
@@ -208,5 +183,4 @@ class Explosion(pygame.sprite.Sprite):
                 self.rect = self.image.get_rect()
                 self.rect.center = center
 
-    
     
